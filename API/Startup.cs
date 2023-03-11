@@ -1,9 +1,11 @@
 using System;
 using System.Reflection;
 using Domain.Aggregates.AirportAggregate;
+using Domain.Aggregates.FlightAggregate;
 using FluentValidation.AspNetCore;
 using Infrastructure;
-using Infrastructure.Repositores;
+using Infrastructure.Repositories;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +42,7 @@ namespace API
                 typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
             services.AddScoped<IAirportRepository, AirportRepository>();
+            services.AddScoped<IFlightRepository, FlightRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

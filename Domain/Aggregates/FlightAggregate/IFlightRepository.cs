@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Domain.Aggregates.FlightAggregate
@@ -10,5 +12,7 @@ namespace Domain.Aggregates.FlightAggregate
         void Update(Flight flight);
 
         Task<Flight> GetAsync(Guid flightId);
+
+        Task<IList<Flight>> GetAvailableAsync(string destination = null, CancellationToken cancellationToken = default);
     }
 }
