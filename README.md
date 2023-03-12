@@ -22,16 +22,13 @@
         - When an order is confirmed, the any ordered rates should lower their availability by the quantity ordered
         - Notifies the customer about the confirmed order (fake the notification with a `Console.WriteLine`)
         - Its not possible to make changes to a confirmed order (guarded by domain)
-- **Architecture requirements**: Apply the following practices throughout the project
+- **Architecture requirements**: 
     - Domain Driven Design
     - CQRS
     - Mediator pattern (Using [MediatR](https://github.com/jbogard/MediatR))
     - Persistence ignorance
     - SOLID
-- **Other**
-    - The project must be runnable on MacOS and Windows
-    - If there are additional steps for us to take to run it, please write them down
-
+    - 
 ## Prerequisities
 
 - Docker Desktop
