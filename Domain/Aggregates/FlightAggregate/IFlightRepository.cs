@@ -14,5 +14,10 @@ namespace Domain.Aggregates.FlightAggregate
         Task<Flight> GetAsync(Guid flightId);
 
         Task<IList<Flight>> GetAvailableAsync(string destination = null, CancellationToken cancellationToken = default);
+
+        Task<Flight> GetFlightsWithSelectedRateAsync(Guid flightId, Guid flightRateId,
+            CancellationToken cancellationToken = default);
+
+        void UpdateFlightRate(FlightRate flightRate);
     }
 }

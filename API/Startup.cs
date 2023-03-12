@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Domain.Aggregates.AirportAggregate;
 using Domain.Aggregates.FlightAggregate;
+using Domain.Aggregates.OrderAggregate;
 using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Repositories;
@@ -43,6 +44,7 @@ namespace API
 
             services.AddScoped<IAirportRepository, AirportRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

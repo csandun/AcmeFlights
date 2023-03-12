@@ -32,7 +32,9 @@ public class FlightRepository : IFlightRepository
 
     public async Task<Flight> GetAsync(Guid flightId)
     {
-        return await _context.Flights.FirstOrDefaultAsync(o => o.Id == flightId);
+        return await _context.Flights
+            .Include(o => o.Rates)
+            .FirstOrDefaultAsync(o => o.Id == flightId);
     }
 
     public async Task<IList<Flight>> GetAvailableAsync(string destination = null, CancellationToken cancellationToken = default)
@@ -43,4 +45,17 @@ public class FlightRepository : IFlightRepository
             .Where(o => o.Rates.Any(p => p.Available > 0))
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<Flight> GetFlightsWithSelectedRateAsync(Guid flightId, Guid flightRateId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Flights
+            .Include(o => o.Rates.Where(p => p.Id == flightRateId))
+            .FirstOrDefaultAsync(o => o.Id == flightId, cancellationToken);
+    }
+    
+    public void UpdateFlightRate(FlightRate flightRate)
+    {
+        _context.FlightRates.Update(flightRate);
+    }
+
 }
