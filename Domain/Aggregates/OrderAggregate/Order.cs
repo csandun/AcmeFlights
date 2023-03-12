@@ -10,16 +10,15 @@ namespace Domain.Aggregates.OrderAggregate;
 public class Order : Entity, IAggregateRoot
 {
     private readonly List<OrderLineItem> _lineItems;
+    public DateTimeOffset OrderCreatedDateTime { get; private set; } = DateTimeOffset.Now;
+    public DateTimeOffset OrderDraftedDateTime { get; private set; }
+    public OrderStatus Status { get; private set; } = OrderStatus.Draft;
+    public IReadOnlyCollection<OrderLineItem> LineItems => _lineItems;
 
     private Order()
     {
         _lineItems = new List<OrderLineItem>();
     }
-
-    public DateTimeOffset OrderCreatedDateTime { get; private set; } = DateTimeOffset.Now;
-    public DateTimeOffset OrderDraftedDateTime { get; private set; }
-    public OrderStatus Status { get; private set; } = OrderStatus.Draft;
-    public IReadOnlyCollection<OrderLineItem> LineItems => _lineItems;
 
     // I am preferring to use static factory method for creating DDD objects because of the encapsulating creating process.
     // That's why i used private constructor
