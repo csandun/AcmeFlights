@@ -17,7 +17,8 @@ public class SearchFlightQueryHandler : IRequestHandler<SearchFlightQuery, IEnum
         _flightRepository = flightRepository;
     }
 
-    public async Task<IEnumerable<FlightResponse>> Handle(SearchFlightQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FlightResponse>> Handle(SearchFlightQuery request,
+        CancellationToken cancellationToken)
     {
         var flights = await _flightRepository.GetAvailableAsync(null, cancellationToken);
         return flights.Select(o => new FlightResponse(

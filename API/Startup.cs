@@ -6,65 +6,60 @@ using Domain.Aggregates.OrderAggregate;
 using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Repositories;
-using Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MediatR;
 
-namespace API
+namespace API;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        Configuration = configuration;
+    }
 
-        public IConfiguration Configuration { get; }
+    public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers()
-                .AddNewtonsoftJson()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
-            
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers()
+            .AddNewtonsoftJson()
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
 
-            services.AddMediatR(typeof(Startup));
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddOpenApiDocument(d => d.Title = "AcmeFlights API");
+        services.AddMediatR(typeof(Startup));
 
-            services.AddFlightsContext(
-                Configuration["Database:ConnectionString"],
-                typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+        services.AddOpenApiDocument(d => d.Title = "AcmeFlights API");
 
-            services.AddScoped<IAirportRepository, AirportRepository>();
-            services.AddScoped<IFlightRepository, FlightRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-        }
+        services.AddFlightsContext(
+            Configuration["Database:ConnectionString"],
+            typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+        services.AddScoped<IAirportRepository, AirportRepository>();
+        services.AddScoped<IFlightRepository, FlightRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+    }
 
-            app.UseHttpsRedirection();
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
-            app.UseRouting();
+        app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+        app.UseRouting();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        app.UseAuthorization();
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
-        }
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+        app.UseOpenApi();
+        app.UseSwaggerUi3();
     }
 }

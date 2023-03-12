@@ -13,12 +13,12 @@ public class FlightRepository : IFlightRepository
 {
     private readonly FlightsContext _context;
 
-    public IUnitOfWork UnitOfWork => _context;
-
     public FlightRepository(FlightsContext context)
     {
         _context = context;
     }
+
+    public IUnitOfWork UnitOfWork => _context;
 
     public Flight Add(Flight flight)
     {
@@ -37,7 +37,8 @@ public class FlightRepository : IFlightRepository
             .FirstOrDefaultAsync(o => o.Id == flightId);
     }
 
-    public async Task<IList<Flight>> GetAvailableAsync(string destination = null, CancellationToken cancellationToken = default)
+    public async Task<IList<Flight>> GetAvailableAsync(string destination = null,
+        CancellationToken cancellationToken = default)
     {
         // considering null for now
         return await _context.Flights
@@ -46,16 +47,16 @@ public class FlightRepository : IFlightRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<Flight> GetFlightsWithSelectedRateAsync(Guid flightId, Guid flightRateId, CancellationToken cancellationToken = default)
+    public async Task<Flight> GetFlightsWithSelectedRateAsync(Guid flightId, Guid flightRateId,
+        CancellationToken cancellationToken = default)
     {
         return await _context.Flights
             .Include(o => o.Rates.Where(p => p.Id == flightRateId))
             .FirstOrDefaultAsync(o => o.Id == flightId, cancellationToken);
     }
-    
+
     public void UpdateFlightRate(FlightRate flightRate)
     {
         _context.FlightRates.Update(flightRate);
     }
-
 }

@@ -2,14 +2,13 @@ using System;
 using System.Threading.Tasks;
 using Domain.SeedWork;
 
-namespace Domain.Aggregates.AirportAggregate
+namespace Domain.Aggregates.AirportAggregate;
+
+public interface IAirportRepository : IRepository<Airport>
 {
-    public interface IAirportRepository : IRepository<Airport>
-    {
-        Airport Add(Airport airport);
+    Airport Add(Airport airport);
 
-        void Update(Airport airport);
+    void Update(Airport airport);
 
-        Task<Airport> GetAsync(Guid airportId);
-    }
+    Task<Airport> GetAsync(Guid airportId);
 }

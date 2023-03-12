@@ -1,4 +1,3 @@
-using API.Application.Commands;
 using FluentValidation;
 
 namespace API.Application.Commands;

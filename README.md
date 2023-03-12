@@ -1,6 +1,6 @@
 # AcmeFlights DDD POC Project
 
-##  "requirements"
+## "requirements"
 
 - Implement the following features:
     - **Feature 1**: Search the available flights for a destination
@@ -22,13 +22,14 @@
         - When an order is confirmed, the any ordered rates should lower their availability by the quantity ordered
         - Notifies the customer about the confirmed order (fake the notification with a `Console.WriteLine`)
         - Its not possible to make changes to a confirmed order (guarded by domain)
-- **Architecture requirements**: 
+- **Architecture requirements**:
     - Domain Driven Design
     - CQRS
     - Mediator pattern (Using [MediatR](https://github.com/jbogard/MediatR))
     - Persistence ignorance
     - SOLID
-    - 
+    -
+
 ## Prerequisities
 
 - Docker Desktop

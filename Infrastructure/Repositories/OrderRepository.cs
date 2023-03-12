@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Domain.Aggregates.FlightAggregate;
 using Domain.Aggregates.OrderAggregate;
 using Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class OrderRepository: IOrderRepository
+public class OrderRepository : IOrderRepository
 {
     private readonly FlightsContext _context;
-
-    public IUnitOfWork UnitOfWork => _context;
 
     public OrderRepository(FlightsContext context)
     {
         _context = context;
     }
+
+    public IUnitOfWork UnitOfWork => _context;
 
     public Order Add(Order order)
     {

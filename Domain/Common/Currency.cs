@@ -1,7 +1,6 @@
-namespace Domain.Common
+namespace Domain.Common;
+
+public enum Currency
 {
-    public enum Currency
-    {
-        EUR
-    }
+    EUR
 }

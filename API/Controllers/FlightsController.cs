@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.ApiResponses;
@@ -13,11 +12,12 @@ namespace API.Controllers;
 public class FlightsController : ControllerBase
 {
     private readonly IMediator _mediator;
+
     public FlightsController(IMediator mediator)
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     [Route("search")]
     public async Task<IEnumerable<FlightResponse>> GetAvailableFlights([FromQuery] string destination = null)

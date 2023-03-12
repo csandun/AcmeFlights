@@ -4,7 +4,7 @@ using Domain.Aggregates.OrderAggregate;
 
 namespace API.Mapping;
 
-public class OrderLineItemProfile: Profile
+public class OrderLineItemProfile : Profile
 {
     public OrderLineItemProfile()
     {
