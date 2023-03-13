@@ -42,3 +42,6 @@
 - You can now run the API project and everything should work. Upon start the application will run the migrations and
   seed data to the database.
 
+## Migrations
+- dotnet ef migrations add xxxxx
+-  dotnet ef database update  

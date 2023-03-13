@@ -51,7 +51,7 @@ public class FlightRepository : IFlightRepository
         CancellationToken cancellationToken = default)
     {
         return await _context.Flights
-            .Include(o => o.Rates.Where(p => p.Id == flightRateId))
+            .Include(o => o.Rates)
             .FirstOrDefaultAsync(o => o.Id == flightId, cancellationToken);
     }
 

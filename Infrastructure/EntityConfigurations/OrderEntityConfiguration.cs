@@ -11,7 +11,7 @@ public class OrderEntityConfiguration : BaseEntityTypeConfiguration<Order>
     {
         base.Configure(builder);
 
-        builder.Property("Quantity").IsRequired();
+        
         builder.Property("OrderDraftedDateTime").IsRequired();
         builder.Property("OrderCreatedDateTime");
         builder.Property("Status")

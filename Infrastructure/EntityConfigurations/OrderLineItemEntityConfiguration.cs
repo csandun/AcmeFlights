@@ -15,19 +15,19 @@ public class OrderLineItemEntityConfiguration : BaseEntityTypeConfiguration<Orde
         
         builder
             .HasOne<Order>()
-            .WithOne()
+            .WithMany()
             .IsRequired()
             .HasForeignKey("OrderId");
         
         builder
             .HasOne<Flight>()
-            .WithOne()
+            .WithMany()
             .IsRequired()
             .HasForeignKey("FlightId");
 
         builder
             .HasOne<FlightRate>()
-            .WithOne()
+            .WithMany()
             .IsRequired()
             .HasForeignKey("FlightRateId");
         

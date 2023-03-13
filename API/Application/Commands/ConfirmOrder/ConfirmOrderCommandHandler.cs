@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -28,7 +29,7 @@ public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, U
         var order = await _orderRepository.GetAsync(request.OrderId);
         if (order is null) throw new ArgumentException("Cannot find your order record");
 
-        if (!order.LineItems.Any()) throw new ArgumentException("You cannot confirm without line items");
+        if (!order.LineItems.ToList().Any()) throw new ArgumentException("You cannot confirm without line items");
 
         // confirm the order
         order.Confirm();

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Domain.Aggregates.OrderAggregate;
 using Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.Repositories;
 
@@ -17,9 +18,9 @@ public class OrderRepository : IOrderRepository
 
     public IUnitOfWork UnitOfWork => _context;
 
-    public Order Add(Order order)
+    public async Task AddAsync(Order order)
     {
-        return _context.Orders.Add(order).Entity;
+        await _context.Orders.AddAsync(order);
     }
 
     public void Update(Order order)

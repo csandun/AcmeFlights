@@ -22,6 +22,7 @@ public class SearchFlightQueryHandler : IRequestHandler<SearchFlightQuery, IEnum
     {
         var flights = await _flightRepository.GetAvailableAsync(null, cancellationToken);
         return flights.Select(o => new FlightResponse(
+            o.Id.ToString(),
             o.OriginAirportId.ToString(),
             o.DestinationAirportId.ToString(),
             o.Departure,

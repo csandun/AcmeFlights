@@ -10,8 +10,8 @@ namespace Domain.Aggregates.OrderAggregate;
 public class Order : Entity, IAggregateRoot
 {
     private readonly List<OrderLineItem> _lineItems;
-    public DateTimeOffset OrderCreatedDateTime { get; private set; } = DateTimeOffset.Now;
-    public DateTimeOffset OrderDraftedDateTime { get; private set; }
+    public DateTime? OrderCreatedDateTime { get; private set; } 
+    public DateTime OrderDraftedDateTime { get; private set; } = DateTime.UtcNow;
     public OrderStatus Status { get; private set; } = OrderStatus.Draft;
     public IReadOnlyCollection<OrderLineItem> LineItems => _lineItems;
 
@@ -38,7 +38,7 @@ public class Order : Entity, IAggregateRoot
             throw new OrderDomainException("Order already confirmed. Cannot update order status anymore.");
 
         Status = OrderStatus.Completed;
-        OrderCreatedDateTime = DateTimeOffset.Now;
+        OrderCreatedDateTime = DateTime.UtcNow;
         AddDomainEvent(new OrderConfirmedEvent(this));
     }
 

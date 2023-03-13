@@ -3,24 +3,23 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-
-#nullable disable
 
 namespace API.Migrations
 {
     [DbContext(typeof(FlightsContext))]
-    partial class FlightsContextModelSnapshot : ModelSnapshot
+    [Migration("20230313014642_orderItems")]
+    partial class orderItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.13")
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.1.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Aggregates.AirportAggregate.Airport", b =>
                 {
@@ -100,10 +99,10 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("OrderCreatedDateTime")
+                    b.Property<DateTimeOffset>("OrderCreatedDateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("OrderDraftedDateTime")
+                    b.Property<DateTimeOffset>("OrderDraftedDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
@@ -183,8 +182,6 @@ namespace API.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("FlightRateId");
                         });
-
-                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("Domain.Aggregates.OrderAggregate.OrderLineItem", b =>
@@ -223,18 +220,6 @@ namespace API.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("OrderLineItemId");
                         });
-
-                    b.Navigation("Price");
-                });
-
-            modelBuilder.Entity("Domain.Aggregates.FlightAggregate.Flight", b =>
-                {
-                    b.Navigation("Rates");
-                });
-
-            modelBuilder.Entity("Domain.Aggregates.OrderAggregate.Order", b =>
-                {
-                    b.Navigation("LineItems");
                 });
 #pragma warning restore 612, 618
         }

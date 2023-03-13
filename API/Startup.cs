@@ -28,12 +28,12 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers()
-            .AddNewtonsoftJson()
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        services.AddMediatR(typeof(Startup));
+        
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
         services.AddOpenApiDocument(d => d.Title = "AcmeFlights API");
 

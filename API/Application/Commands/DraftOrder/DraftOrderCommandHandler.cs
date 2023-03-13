@@ -26,8 +26,6 @@ public class DraftOrderCommandHandler : IRequestHandler<DraftOrderCommand, Order
     {
         var order = Order.CreateOrder();
 
-        _orderRepository.Add(order);
-
         foreach (var orderItem in request.OrderItemLines)
         {
             var flight = await _flightRepository.GetFlightsWithSelectedRateAsync(orderItem.FlightId,
@@ -42,7 +40,9 @@ public class DraftOrderCommandHandler : IRequestHandler<DraftOrderCommand, Order
                 rate.Price,
                 orderItem.Quantity, rate.Available);
         }
-
+        
+        await _orderRepository.AddAsync(order);
+        
         await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return order;
