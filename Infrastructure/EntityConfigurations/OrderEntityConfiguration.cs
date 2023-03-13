@@ -1,5 +1,6 @@
 ﻿using Domain.Aggregates.FlightAggregate;
 using Domain.Aggregates.OrderAggregate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.EntityConfigurations;
@@ -17,16 +18,8 @@ public class OrderEntityConfiguration : BaseEntityTypeConfiguration<Order>
             .IsRequired()
             .HasConversion<int>();
 
-        builder
-            .HasOne<Flight>()
-            .WithOne()
-            .IsRequired()
-            .HasForeignKey("FlightId");
+        var navigation = builder.Metadata.FindNavigation(nameof(Order.LineItems));
+        navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-        builder
-            .HasOne<FlightRate>()
-            .WithOne()
-            .IsRequired()
-            .HasForeignKey("FlightRateId");
     }
 }

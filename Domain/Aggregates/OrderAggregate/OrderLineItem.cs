@@ -30,8 +30,7 @@ public class OrderLineItem : Entity
             Price = price
         };
     }
-
-
+    
     public void MutateQuantity(int quantity)
     {
         Quantity += quantity;
