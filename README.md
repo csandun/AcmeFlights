@@ -22,6 +22,7 @@
         - When an order is confirmed, the any ordered rates should lower their availability by the quantity ordered
         - Notifies the customer about the confirmed order (fake the notification with a `Console.WriteLine`)
         - Its not possible to make changes to a confirmed order (guarded by domain)
+
 - **Architecture requirements**:
     - Domain Driven Design
     - CQRS
@@ -45,3 +46,11 @@
 ## Migrations
 - dotnet ef migrations add xxxxx
 -  dotnet ef database update  
+
+## **Main project changes**:
+- Upgraded project nugets up to .Net6
+- I am preferred to move  Application folder to separate class library,  according to Clean Architecture. But I haven't much time to do this.
+- According to Clean architecture I separated command and queries with usecase wise.
+- Tried to cover all points
+
+*Thanks*
