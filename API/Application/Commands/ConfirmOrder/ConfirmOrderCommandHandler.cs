@@ -56,7 +56,7 @@ public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, O
 
         await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-        // Notifies the customer about the confirmed order 
+        // Notifies the customer about the confirmed order using mediator pipeline
         await _mediator.Publish(new OrderConfirmNotification(order), cancellationToken);
 
         return new OrderViewModel(order.Id, Enum.GetName(typeof(OrderStatus), order.Status));
