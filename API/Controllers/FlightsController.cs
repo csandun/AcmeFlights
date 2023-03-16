@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using API.ApiResponses;
 using API.Application.Queries.SearchFlights;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -19,10 +20,11 @@ public class FlightsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("search")]
-    public async Task<IEnumerable<FlightResponse>> GetAvailableFlights([FromQuery] string destination = null)
+    [Route("search-available-flightrates")]
+    [ProducesResponseType(typeof(IEnumerable<FlightResponse>), StatusCodes.Status200OK)]
+    public async Task<IEnumerable<FlightResponse>> GetAvailableFlights()
     {
-        var flights = await _mediator.Send(new SearchFlightQuery(destination));
+        var flights = await _mediator.Send(new SearchFlightQuery());
         return flights;
     }
 }

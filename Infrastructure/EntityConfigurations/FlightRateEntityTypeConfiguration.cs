@@ -1,5 +1,6 @@
 using System;
 using Domain.Aggregates.FlightAggregate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.EntityConfigurations;
@@ -15,10 +16,7 @@ public class FlightRateEntityTypeConfiguration : BaseEntityTypeConfiguration<Fli
         builder.Property("Name").IsRequired();
         builder.Property("Available").IsRequired();
 
-        builder.OwnsOne(o => o.Price, a =>
-        {
-            a.Property<Guid>("FlightRateId");
-            a.WithOwner();
-        });
+        builder.OwnsOne(o => o.Price).Property(p => p.Value).HasColumnName("Price_Value");
+        builder.OwnsOne(o => o.Price).Property(p => p.Currency).HasColumnName("Price_Currency");
     }
 }

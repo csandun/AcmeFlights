@@ -31,6 +31,7 @@ public class OrderLineItem : Entity
         };
     }
     
+    // reduce quantity when order is confirmed
     public void MutateQuantity(int quantity)
     {
         Quantity += quantity;

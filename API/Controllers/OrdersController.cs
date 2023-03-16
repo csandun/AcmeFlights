@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using API.Application.Commands.ConfirmOrder;
 using API.Application.Commands.DraftOrder;
+using API.Application.ViewModels;
 using Domain.Aggregates.OrderAggregate;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,15 +23,19 @@ public class OrdersController : ControllerBase
 
     [HttpPost]
     [Route("draft")]
-    public async Task<Order> GetAvailableFlights([FromBody] DraftOrderCommand order)
+    [ProducesResponseType(typeof(OrderViewModel), StatusCodes.Status201Created)]
+    public async Task<IActionResult> GetAvailableFlights([FromBody] DraftOrderCommand order)
     {
-        return await _mediator.Send(order);
+        var createdDraftOrder = await _mediator.Send(order);
+        return new CreatedResult($"/Orders/{createdDraftOrder.Id}/draft",createdDraftOrder);
     }
 
     [HttpPut]
     [Route("{orderId}/confirm")]
-    public async Task<Unit> GetAvailableFlights([FromRoute] Guid orderId)
+    [ProducesResponseType(typeof(OrderViewModel), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAvailableFlights([FromRoute] Guid orderId)
     {
-        return await _mediator.Send(new ConfirmOrderCommand(orderId));
+        var confirmedOrder =  await _mediator.Send(new ConfirmOrderCommand(orderId));
+        return Ok(confirmedOrder);
     }
 }

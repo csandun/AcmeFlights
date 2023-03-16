@@ -21,12 +21,14 @@ public class SearchFlightQueryHandler : IRequestHandler<SearchFlightQuery, IEnum
         CancellationToken cancellationToken)
     {
         var flights = await _flightRepository.GetAvailableAsync(null, cancellationToken);
+
+
         return flights.Select(o => new FlightResponse(
             o.Id.ToString(),
             o.OriginAirportId.ToString(),
             o.DestinationAirportId.ToString(),
             o.Departure,
             o.Arrival,
-            o.Rates.Min(p => p.Price.Value))).OrderBy(o => o.PriceFrom);
+            o.Rates.ToList().OrderBy(o => o.Price.Value).FirstOrDefault()?.Price?.Value ?? 0));
     }
 }

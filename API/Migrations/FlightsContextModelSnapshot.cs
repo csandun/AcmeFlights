@@ -176,6 +176,14 @@ namespace API.Migrations
                             b1.Property<Guid>("FlightRateId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<int>("Currency")
+                                .HasColumnType("integer")
+                                .HasColumnName("Price_Currency");
+
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("numeric")
+                                .HasColumnName("Price_Value");
+
                             b1.HasKey("FlightRateId");
 
                             b1.ToTable("FlightRates");

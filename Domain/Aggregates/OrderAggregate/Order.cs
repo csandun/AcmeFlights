@@ -12,7 +12,10 @@ public class Order : Entity, IAggregateRoot
     private readonly List<OrderLineItem> _lineItems;
     public DateTime? OrderCreatedDateTime { get; private set; } 
     public DateTime OrderDraftedDateTime { get; private set; } = DateTime.UtcNow;
+    
+    // order initial status is draft
     public OrderStatus Status { get; private set; } = OrderStatus.Draft;
+    
     public IReadOnlyCollection<OrderLineItem> LineItems => _lineItems;
 
     private Order()
@@ -20,7 +23,7 @@ public class Order : Entity, IAggregateRoot
         _lineItems = new List<OrderLineItem>();
     }
 
-    // I am preferring to use static factory method for creating DDD objects because of the encapsulating creating process.
+    // ** I am preferring to use static factory method for creating DDD objects because of the encapsulating creating process.
     // That's why i used private constructor
     public static Order CreateOrder()
     {
@@ -48,6 +51,7 @@ public class Order : Entity, IAggregateRoot
         if (Status == OrderStatus.Completed)
             throw new OrderDomainException("Order already confirmed. Cannot update order anymore");
 
+        // check availability before add item to order
         if (availablity < quantity)
             throw new OrderDomainException("Cannot add item to order because there has not availablity of the flight");
 

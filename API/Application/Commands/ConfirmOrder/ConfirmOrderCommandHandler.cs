@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using API.Application.ViewModels;
 using AutoMapper;
 using Domain.Aggregates.FlightAggregate;
 using Domain.Aggregates.OrderAggregate;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace API.Application.Commands.ConfirmOrder;
 
-public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, Unit>
+public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, OrderViewModel>
 {
     private readonly IFlightRepository _flightRepository;
     private readonly IMediator _mediator;
@@ -24,16 +25,20 @@ public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, U
         _mediator = mediator;
     }
 
-    public async Task<Unit> Handle(ConfirmOrderCommand request, CancellationToken cancellationToken)
+    public async Task<OrderViewModel> Handle(ConfirmOrderCommand request, CancellationToken cancellationToken)
     {
+        // get existing order from the order id
         var order = await _orderRepository.GetAsync(request.OrderId);
+        
+        // if order cannot find and order lines are empty cannot confirm order. then throws exceptions
         if (order is null) throw new ArgumentException("Cannot find your order record");
 
         if (!order.LineItems.ToList().Any()) throw new ArgumentException("You cannot confirm without line items");
 
-        // confirm the order
+        // confirm the order DDD manner; When confirming,  status and order availabilty are guarded by Domain.
         order.Confirm();
 
+        // process order items and reduce availability for each flight ratings
         foreach (var orderItem in order.LineItems)
         {
             var flight = await _flightRepository.GetFlightsWithSelectedRateAsync(orderItem.FlightId,
@@ -54,6 +59,6 @@ public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand, U
         // Notifies the customer about the confirmed order 
         await _mediator.Publish(new OrderConfirmNotification(order), cancellationToken);
 
-        return new Unit();
+        return new OrderViewModel(order.Id, Enum.GetName(typeof(OrderStatus), order.Status));
     }
 }
